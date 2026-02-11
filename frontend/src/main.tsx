@@ -1,5 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
+import {BrowserRouter} from 'react-router-dom'
 import { ChakraProvider, createSystem, defaultConfig } from '@chakra-ui/react'
 
 const rootElement = document.getElementById('root');
@@ -13,6 +14,8 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
       <ChakraProvider value={system}> 
+        <BrowserRouter>
             <App />
+        </BrowserRouter>
       </ChakraProvider>
 )

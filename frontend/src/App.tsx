@@ -1,35 +1,33 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom"
+import { Box, Flex } from "@chakra-ui/react"
+
+import Footer from './components/Footer'
+
+import Login from './pages/LoginPage'
+import Register from './pages/RegisterPage';
+import Home from "./pages/HomePage";
+
+import bg from './assets/bg.png'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <Flex flexDir={"column"} justifyContent={"center"}
+      backgroundImage={`url(${bg})`} backgroundRepeat={"no-repeat"} backgroundPosition={"center"} backgroundSize={"cover"} h={"100vh"}>
+        <Box id='App-contents'>
+          <Routes>
+            
+            <Route path='/' element={<Login />}/>
+
+            <Route path="/register" element={<Register />}/>
+    
+            <Route path='/home' element={<Home />}/>
+          </Routes>
+        </Box>
+        <Box id='footer'
+        pos={"fixed"} bottom={"0"} pb={"10px"} w={"100%"} color={"white"}>
+          <Footer />
+        </Box>
+    </Flex>
   )
 }
-
 export default App
