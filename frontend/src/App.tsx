@@ -4,7 +4,7 @@ import { Box, Flex } from "@chakra-ui/react"
 import Footer from './components/Footer'
 
 import Login from './pages/LoginPage'
-import Register from './pages/RegisterPage';
+import Register from './pages/auth/RegisterPage';
 import Home from "./pages/HomePage";
 
 import bg from './assets/bg.png'
