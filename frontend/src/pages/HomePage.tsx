@@ -5,6 +5,16 @@ const Home: React.FC = () => {
         <Flex justifyContent={"center"} alignItems={"center"}
         h={"100%"} w={"100%"}
         color={"#ffffffe8"}>
+            <Button 
+            fontWeight={500}
+            position={"absolute"} right={0} top={0}
+            bg={"transparent"}
+            shadow={"lg"}
+            _hover={{
+                shadow: "inner"
+            }}>
+                Déconnexion
+            </Button>
             <Flex direction={"column"} alignItems={"center"}
             h={"fit-content"} minW={"500px"}
             bg={"#ffffff71"}
