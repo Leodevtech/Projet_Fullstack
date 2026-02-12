@@ -1,10 +1,10 @@
 import { Box, Flex, Text, Heading, Link, Image } from "@chakra-ui/react"
 
-import  InstaIcon  from '../assets/instaLogo.png'
-import FbLogo from '../assets/fbLogo.png'
-import XLogo from '../assets/xLogo.png'
+import  InstaIcon  from '../../assets/instaLogo.png'
+import FbLogo from '../../assets/fbLogo.png'
+import XLogo from '../../assets/xLogo.png'
 
-import SignInForm from "../components/SignInForm"
+import SignInForm from "../../components/SignInForm"
 
 const Login: React.FC = () => {
     return(

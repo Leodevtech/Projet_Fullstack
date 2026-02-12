@@ -3,7 +3,7 @@ import { Box, Flex } from "@chakra-ui/react"
 
 import Footer from './components/Footer'
 
-import Login from './pages/LoginPage'
+import Login from './pages/auth/LoginPage'
 import Register from './pages/auth/RegisterPage';
 import Home from "./pages/HomePage";
 
