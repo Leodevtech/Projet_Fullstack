@@ -12,13 +12,6 @@ const Register: React.FC = () => {
     const navigate = useNavigate();
     const fields: IInputs[] = [
         {
-            name: "nom",
-            label: "nom",
-            type: "text",
-            placeHolder: "Nom",
-            validation: { required : "nom requis"}
-        },
-        {
             name: "email",
             label: "email", // label pour l'accessibilité
             type: "email",
