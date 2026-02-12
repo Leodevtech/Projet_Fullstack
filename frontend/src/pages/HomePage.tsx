@@ -1,6 +1,12 @@
 import { Box, Button, Flex, Heading, HStack, Text } from "@chakra-ui/react"
 
 const Home: React.FC = () => {
+    
+    //function for disconnect
+    const handleClickDeco = () => {
+        window.location.href ="/"
+    }
+
     return (
         <Flex justifyContent={"center"} alignItems={"center"}
         h={"100%"} w={"100%"}
@@ -12,7 +18,8 @@ const Home: React.FC = () => {
             shadow={"lg"}
             _hover={{
                 shadow: "inner"
-            }}>
+            }}
+            onClick={handleClickDeco}>
                 Déconnexion
             </Button>
             <Flex direction={"column"} alignItems={"center"}

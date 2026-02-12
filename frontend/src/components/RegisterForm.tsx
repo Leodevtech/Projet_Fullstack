@@ -1,9 +1,8 @@
 import { Button, Flex, Input, Stack } from "@chakra-ui/react"
 
-export type IRegisterFormProps = unknown
-
-const RegisterForm: React.FC<IRegisterFormProps> = () => {
+const RegisterForm: React.FC = () => {
     
+    // function for form submit
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         window.location.href="/home"
@@ -59,7 +58,14 @@ const RegisterForm: React.FC<IRegisterFormProps> = () => {
                     }}/>
                     <Button type="submit"
                     fontSize={"40px"} fontWeight={"700"}
-                    bg={"transparent"}>
+                    bg={"transparent"}
+                    _focusVisible={{
+                        outline: "solid 2px #fcff64",
+                        borderRadius: "full"
+                    }}
+                    _hover={{
+                        color: "#ffffff9f"
+                    }}>
                         Create account
                     </Button>
                 </Stack>

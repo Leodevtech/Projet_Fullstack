@@ -21,18 +21,30 @@ const Login: React.FC = () => {
                     <Text fontSize={"32px"}>Or continue with</Text>
                 </Box>
                 <Flex gap={10}>
-                    <Link href="https://www.instagram.com/" 
-                    bg={"transparent"}>
+                    <Link href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer"
+                    bg={"transparent"} 
+                    _focus={{
+                        outline: "2px solid #fcff64",
+                        borderRadius: "full"
+                    }}>
                         <Image src={InstaIcon} h={"80px"} w={"80px"}/>
                     </Link>
-                    <Link href="https://www.facebook.com/" 
+                    <Link href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer"
                     mr={"20px"}
-                    bg={"transparent"}>
+                    bg={"transparent"}
+                    _focus={{
+                        outline: "2px solid #fcff64",
+                        borderRadius: "full"
+                    }}>
                         <Image src={FbLogo} h={"48px"} w={"48px"}/>
                     </Link>
-                    <Link href="https://x.com/" 
+                    <Link href="https://x.com/" target="_blank" rel="noopener noreferrer"
                     mr={"20px"}
-                    bg={"transparent"}>
+                    bg={"transparent"}
+                    _focus={{
+                        outline: "2px solid #fcff64",
+                        borderRadius: "full"
+                    }}>
                         <Image src={XLogo} h={"48px"} w={"48px"}/>
                     </Link>
                 </Flex>

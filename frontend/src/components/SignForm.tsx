@@ -15,6 +15,7 @@ export interface IData {
 
 const SignInForm: React.FC = () => {
 
+  // function for form submit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     window.location.href = "/home"
