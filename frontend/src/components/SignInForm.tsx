@@ -26,6 +26,7 @@ import axios from "axios";
 import type { IInputs } from "@/types/input";
 import Form from "./Form";
 import api from "../api/axios";
+import { useState } from "react";
 
 export interface IData {
   nom: string;
@@ -60,6 +61,10 @@ const SignInForm: React.FC = () => {
     },
   ];
 
+  const [open, setOpen] = useState<boolean>(false)
+  const [email, setEmail] = useState<string>("")
+
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       await api.post("http://localhost:3000/api/auth/login", data);
@@ -78,6 +83,27 @@ const SignInForm: React.FC = () => {
       alert(errorMessage);
     }
   };
+
+  const handleSendMail: SubmitHandler<FieldValues> = async () => {
+    try {
+      await api.post("http://localhost:3000/api/auth/reset-password-request", {email})
+      console.log(email);
+      alert('Mail de vérification envoyé ;)'); 
+      setOpen(false)
+      setEmail("")
+    } catch (error: unknown) {
+      console.error(error);
+      let errorMessage = "Une erreur est survenue lors de l'envoi du mail";
+
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || errorMessage
+      } else if (error instanceof Error) {
+        errorMessage = error.message
+      }
+      alert(errorMessage)
+    }
+
+  }
 
   return (
     <Flex
@@ -117,7 +143,7 @@ const SignInForm: React.FC = () => {
         </Text>
         <Form inputs={fields} onSubmit={onSubmit} submitLabel="Se connecter" />
 
-        <DialogRoot placement={"center"} size={"xl"}>
+        <DialogRoot placement={"center"} size={"xl"} open={open} onOpenChange={(e) => setOpen(e.open)}>
           <DialogTrigger asChild>
             <Button
               bg={"transparent"}
@@ -147,6 +173,8 @@ const SignInForm: React.FC = () => {
                     bg={"#D9D9D9"}
                     borderColor={"#D9D9D9"}
                     borderRadius={"20px"}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     placeholder="entrez l'email de création de votre compte"
                     _placeholder={{
                       textAlign: "center",
@@ -177,6 +205,7 @@ const SignInForm: React.FC = () => {
                     _hover={{
                       shadow: "inner",
                     }}
+                    onClick={handleSendMail}
                   >
                     Envoyer
                   </Button>
