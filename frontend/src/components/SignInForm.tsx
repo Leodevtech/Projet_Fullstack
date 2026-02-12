@@ -1,4 +1,29 @@
-import { Button, Flex, Heading, Input, Link, Stack, Text, DialogRoot, DialogTrigger,DialogContent, DialogHeader, DialogBody, DialogFooter, DialogTitle, DialogActionTrigger, DialogCloseTrigger, Portal, DialogBackdrop, DialogPositioner } from "@chakra-ui/react";
+import { Button, 
+  Flex, 
+  Heading, 
+  Input, 
+  Link, 
+  Text, 
+  DialogRoot, 
+  DialogTrigger, 
+  DialogContent, 
+  DialogHeader, 
+  DialogBody, 
+  DialogFooter, 
+  DialogTitle, 
+  DialogActionTrigger, 
+  DialogCloseTrigger, 
+  Portal, 
+  DialogBackdrop, 
+  DialogPositioner 
+} from "@chakra-ui/react";
+
+import { useNavigate } from "react-router-dom"
+import type { FieldValues, SubmitHandler } from "react-hook-form";
+
+import type { IInputs } from "@/types/input";
+import Form from './Form'
+import api from "../api/axios";
 
 export interface IData {
   nom: string,
@@ -14,12 +39,36 @@ export interface IData {
 }
 
 const SignInForm: React.FC = () => {
+  const navigate = useNavigate();
+    
+  const fields: IInputs[] = [
+    {
+      name: "email",
+      label: "email", // label pour l'accessibilité
+      type: "email",
+      placeHolder: "Email",
+      validation: { required: "email requis" },
+    },
+    {
+      name: "password",
+      label: "password",
+      type: "password",
+      placeHolder: "Mot de passe",
+      validation: { required: "mot de passe requis" },
+    }
+  ]
 
-  // function for form submit
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    window.location.href = "/home"
-  }
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    try {
+      await api.post("/auth/login", data);
+      console.log(data);
+      alert("Votre compte a bien été crée");
+      navigate("/login");
+    } catch (error: unknown) {
+      console.error(error);
+      alert(error.response?.data?.message);
+    }
+  };
 
   return (
     <Flex flexDir={"column"} justifyContent={"center"} alignItems={"center"}
@@ -43,38 +92,8 @@ const SignInForm: React.FC = () => {
             Sign up
           </Link>
         </Text>
+        <Form inputs={fields} onSubmit={onSubmit} submitLabel="Se connecter"/>
 
-        <form onSubmit={handleSubmit}>
-          <Stack gap={8}>
-            <Input
-              type="email"
-              h={"80px"}
-              w={"690px"}
-              color={"black"}
-              fontSize={"32px"}
-              bg={"#D9D9D9"}
-              borderColor={"#D9D9D9"}
-              borderRadius={"20px"}
-              placeholder="email"
-              _placeholder={{ textAlign: "center", color: "black" }}
-            />
-
-            <Input
-              type="password"
-              h={"80px"}
-              w={"690px"}
-              color={"black"}
-              fontSize={"32px"}
-              bg={"#D9D9D9"}
-              borderColor={"#D9D9D9"}
-              borderRadius={"20px"}
-              placeholder="mot de passe"
-              _placeholder={{ textAlign: "center", color: "black" }}
-            />
-          </Stack>
-
-          <Button type="submit" display={"none"} bg={"transparent"}></Button>
-        </form>
         <DialogRoot placement={"center"} size={"xl"}>
           <DialogTrigger asChild>
             <Button 
