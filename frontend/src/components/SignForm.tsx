@@ -1,4 +1,4 @@
-import { Button, Flex, Heading, Input, Link, Stack, Text } from "@chakra-ui/react";
+import { Button, Flex, Heading, Input, Link, Stack, Text, DialogRoot, DialogTrigger,DialogContent, DialogHeader, DialogBody, DialogFooter, DialogTitle, DialogActionTrigger, DialogCloseTrigger, Portal, DialogBackdrop, DialogPositioner } from "@chakra-ui/react";
 
 export interface IData {
   nom: string,
@@ -27,7 +27,7 @@ const SignInForm: React.FC = () => {
       textAlign={"center"}
       bg={"#909E9660"}
       borderRadius={"20px"}>
-      <Flex flexDir={"column"} justifyContent={"center"} alignItems={"center"} gap={10}>
+      <Flex flexDir={"column"} justifyContent={"center"} alignItems={"center"} gap={8}>
         <Heading fontSize={"64px"} fontWeight={"700"}>
           sign in
         </Heading>
@@ -75,6 +75,66 @@ const SignInForm: React.FC = () => {
 
           <Button type="submit" display={"none"} bg={"transparent"}></Button>
         </form>
+        <DialogRoot placement={"center"} size={"xl"}>
+          <DialogTrigger asChild>
+            <Button 
+            bg={"transparent"}
+            _hover={{
+              color: "black"
+            }}>
+              Mot de passe oublié ?
+            </Button>
+          </DialogTrigger>
+
+          <Portal>
+            <DialogBackdrop />
+            <DialogPositioner>              
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Récuperation de mot de passe</DialogTitle>
+                </DialogHeader>
+
+                <DialogBody>
+                  <Input type="email" 
+                        h={"80px"} w={"full"}
+                        color={"black"} fontSize={"32px"}
+                        bg={"#D9D9D9"}
+                        borderColor={"#D9D9D9"} borderRadius={"20px"}
+                        placeholder="entrez l'email de création de votre compte"
+                        _placeholder={{
+                            textAlign: "center",
+                            color: "black"
+                        }}/>
+                </DialogBody>
+
+                <DialogFooter>
+                  <DialogActionTrigger asChild>
+                        <Button 
+                        bg={"transparent"}
+                        shadow={"lg"}
+                        borderRadius={"full"}
+                        _hover={{
+                          shadow: "inner"
+                        }}>
+                          Annuler
+                        </Button>
+                  </DialogActionTrigger>
+                  <Button 
+                        bg={"transparent"}
+                        shadow={"lg"}
+                        borderRadius={"full"}
+                        _hover={{
+                          shadow: "inner"
+                        }}>
+                          Envoyer
+                        </Button>
+                </DialogFooter>
+
+                <DialogCloseTrigger />
+              </DialogContent>
+            </DialogPositioner>
+          </Portal>
+        </DialogRoot>
       </Flex>
     </Flex>
   );
