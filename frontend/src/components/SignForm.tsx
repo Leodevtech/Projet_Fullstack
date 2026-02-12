@@ -109,7 +109,7 @@ const SignInForm: React.FC = () => {
 
                 <DialogFooter>
                   <DialogActionTrigger asChild>
-                        <Button 
+                        <Button color={"black"}
                         bg={"transparent"}
                         shadow={"lg"}
                         borderRadius={"full"}
@@ -119,7 +119,7 @@ const SignInForm: React.FC = () => {
                           Annuler
                         </Button>
                   </DialogActionTrigger>
-                  <Button 
+                  <Button color={"black"}
                         bg={"transparent"}
                         shadow={"lg"}
                         borderRadius={"full"}
