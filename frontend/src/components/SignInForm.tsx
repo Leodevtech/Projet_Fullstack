@@ -21,7 +21,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import type { FieldValues, SubmitHandler } from "react-hook-form";
-import axios from "axios";
+import axios, { type AxiosResponse } from "axios";
 
 import type { IInputs } from "@/types/input";
 import Form from "./Form";
@@ -67,8 +67,9 @@ const SignInForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await api.post("http://localhost:3000/api/auth/login", data);
+      const res: AxiosResponse = await api.post("http://localhost:3000/api/auth/login", data);
       console.log(data);
+      localStorage.setItem('token', res.data.token)
       alert("Votre compte a bien été crée");
       navigate("/home");
     } catch (error: unknown) {
