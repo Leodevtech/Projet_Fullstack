@@ -4,7 +4,7 @@ import  InstaIcon  from '../assets/instaLogo.png'
 import FbLogo from '../assets/fbLogo.png'
 import XLogo from '../assets/xLogo.png'
 
-import SignInForm from "../components/SignForm"
+import SignInForm from "../components/SignInForm"
 
 const Login: React.FC = () => {
     return(
