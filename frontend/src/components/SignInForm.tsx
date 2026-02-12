@@ -20,6 +20,7 @@ import { Button,
 
 import { useNavigate } from "react-router-dom"
 import type { FieldValues, SubmitHandler } from "react-hook-form";
+import axios from "axios";
 
 import type { IInputs } from "@/types/input";
 import Form from './Form'
@@ -60,13 +61,20 @@ const SignInForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await api.post("/auth/login", data);
+      await api.post("http://localhost:3000/auth/login", data);
       console.log(data);
       alert("Votre compte a bien été crée");
       navigate("/login");
     } catch (error: unknown) {
       console.error(error);
-      alert(error.response?.data?.message);
+      let errorMessage = "Une erreur est survenue lors de l'inscription";
+      
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
     }
   };
 

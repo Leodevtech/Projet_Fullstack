@@ -1,6 +1,7 @@
 import { Flex, Heading, Link, Text } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
 import api from "../api/axios";
+import axios from "axios";
 
 import Form from '../components/Form'
 import type { FieldValues, SubmitHandler } from "react-hook-form";
@@ -42,14 +43,21 @@ const Register: React.FC = () => {
   
     const onSubmit: SubmitHandler<FieldValues> = async (data) => {
         try {
-            await api.post("/auth/register", data);
+            await api.post("http://localhost:3000/auth/register", data);
             console.log(data);
             alert("Votre compte a bien été crée");
             navigate("/login");
         } catch (error: unknown) {
-            console.error(error);
-            alert(error.response?.data?.message);
-        }
+      console.error(error);
+      let errorMessage = "Une erreur est survenue lors de l'inscription";
+      
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
+    }
     };
 
     return (
