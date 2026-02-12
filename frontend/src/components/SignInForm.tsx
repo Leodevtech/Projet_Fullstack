@@ -61,7 +61,7 @@ const SignInForm: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await api.post("http://localhost:3000/auth/login", data);
+      await api.post("http://localhost:3000/api/auth/login", data);
       console.log(data);
       alert("Votre compte a bien été crée");
       navigate("/login");

@@ -35,10 +35,10 @@ const Register: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await api.post("/auth/register", data);
+      await api.post("http://localhost:3000/api/auth/register", data);
       console.log(data);
       alert("Votre compte a bien été crée");
-      navigate("/login");
+      navigate("/");
     } catch (error: unknown) {
       console.error(error);
       let errorMessage = "Une erreur est survenue lors de l'inscription";
