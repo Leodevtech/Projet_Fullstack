@@ -62,6 +62,34 @@ const Home: React.FC = () => {
         navigate('/')
     }
 
+    const ivLength = 12
+    const saltLegth = 16
+    const encoder = new TextEncoder()
+
+    const encriptionKey: (password: string, salt) => Promise<CryptoKey> = (password: string, salt: Uint8Array) => {
+        const keyConstructor = await window.crypto.subtle.importKey(
+            "raw",
+            encoder.encode(password),
+            "PBKDF2",
+            false,
+            ["deriveKey"]
+        )
+
+        return window.crypto.subtle.deriveKey(
+            {
+                name: "PBKDF2",
+                salt: salt,
+                iterations: 10000,
+                hash: "SHA-256",
+            },
+            keyConstructor,
+            {name: "AES-GCM", length: 256},
+            false,
+            ["encrypt", "decrypt"]
+        )
+    }
+
+    const encryptPassword: ()
 
     const urlAddPassword = import.meta.env.VITE_URL_ADDPASSWORD
 
