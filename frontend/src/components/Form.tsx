@@ -19,7 +19,7 @@ const RegisterForm: React.FC<IRegisterFormProps> = ({inputs, onSubmit, submitLab
 
                     return(
                         <Box key={i.name}>
-                            //Input crée pour chaque iteration
+                            {/*Input crée pour chaque itération */}
                             <Input type={i.type} {...register(i.name, i.validation)}
                             h={"80px"} w={"690px"}
                             color={"black"} fontSize={"32px"}
