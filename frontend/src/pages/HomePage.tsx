@@ -17,8 +17,10 @@ import { Box,
     Text, 
     DialogFooter,
     DialogActionTrigger,
-    DialogCloseTrigger} from "@chakra-ui/react"
-import {useAuth as auth} from '../hooks/UseAuth'
+    DialogCloseTrigger,
+    Center,
+    Spinner} from "@chakra-ui/react"
+import {useAuth} from '../hooks/UseAuth'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
 import type { FieldValues, SubmitHandler } from "react-hook-form"
@@ -27,30 +29,53 @@ import axios from "axios";
 
 const Home: React.FC = () => {
 
-    //Gestion de l'utilisateur grace a son token
-    const { user, logout} = auth()
+    const auth = useAuth()
     const navigate = useNavigate()
+
+    //Gestion ouverture/fermeture boite de dialogue ajout de mot de passe
+    const [open, setOpen] = useState<boolean>(false)
+
+    if (!auth) {
+        return (
+        <Center h={"100vh"}>
+            <Text>Erreur de chargement</Text>
+        </Center>
+        )
+    }
+
+    //Gestion de l'utilisateur grace a son token
+    const { user, logout, loading} = auth
+
+    if (loading) {
+        return (
+            <Center h="100vh" w="100vw" bg="gray.800">
+                <Spinner color="white" size="xl" />
+                <Text ml={4} color="white">Chargement du coffre-fort...</Text>
+            </Center>
+        );
+    }
+
     const LogoutAndRedirect = () => {
         logout()
         navigate('/')
     }
 
-    //Gestion ouverture/fermeture boite de dialogue ajout de mot de passe
-    const [open, setOpen] = useState<boolean>(false)
 
     const urlAddPassword = import.meta.env.VITE_URL_ADDPASSWORD
 
     //Gestion des roles des differents utilisateurs
-    const role = async (role: string | undefined) => {
-        if (role === "USER") {
-            return (<Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>)
-        } else if (role === "ADMIN") {
-            return (<Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>administrateur</Text>)
-        } else if (role === "MODERATOR") {
-             return (<Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>modérateur</Text>)
-        } else {
-            return (<Text as={"span"} color={"#fc2508"} border={"#fc2508 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur non identifié</Text>)
+    const role = (roleValue: string | undefined) => {
+        if (roleValue) {
+            switch (roleValue) {
+                case "ADMIN":
+                    return <Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>administrateur</Text>
+                case "MODERATOR":
+                    return <Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>modérateur</Text>
+                default: 
+                    return <Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>
+            }
         }
+        return <Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>
     }
 
     //Envoie du mot de passe au backend pour chiffrage 
@@ -178,7 +203,7 @@ const Home: React.FC = () => {
                                             _hover={{
                                             shadow: "inner",
                                             }}
-                                            onClick={() => {return onSubmitAddPassword}}
+                                            onClick={onSubmitAddPassword}
                                             >
                                             Ajouter
                                         </Button>

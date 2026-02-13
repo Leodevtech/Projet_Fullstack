@@ -27,10 +27,13 @@ import type { IInputs } from "@/types/input";
 import Form from "./Form";
 import api from "../api/axios";
 import { useState } from "react";
+import { useAuth } from '../hooks/UseAuth'
+import { jwtDecode } from "jwt-decode";
 
 const SignInForm: React.FC = () => {
   //Variable de navigation à travers les pages
   const navigate = useNavigate();
+  const auth = useAuth()
 
   //Les inputs à soummettre à Form
   const fields: IInputs[] = [
@@ -59,6 +62,10 @@ const SignInForm: React.FC = () => {
     try {      
       const res: AxiosResponse = await api.post(`${urlLogin}`, data);
       localStorage.setItem('token', res.data.token)
+      if (auth) {
+        const decoded = jwtDecode<any>(res.data.token)
+        auth.setUser(decoded)
+      }
       alert("Votre compte a bien été validé");
       navigate("/home");
     } catch (error: unknown) {
