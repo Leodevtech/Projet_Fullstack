@@ -164,12 +164,12 @@ const Home: React.FC = () => {
 
                                                 <Input 
                                                 {...register("username", {required: true})}
-                                                type="text"
+                                                type="email"
                                                 h={"80px"} w={"690px"}
                                                 color={"black"} fontSize={"32px"}
                                                 bg={"#D9D9D9"}
                                                 borderColor={"#D9D9D9"} borderRadius={"20px"}
-                                                placeholder={"identifiant"}
+                                                placeholder={"email pour le site"}
                                                 _placeholder={{
                                                     textAlign: "center",
                                                     color: "black"
