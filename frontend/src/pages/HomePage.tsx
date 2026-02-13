@@ -89,8 +89,6 @@ const Home: React.FC = () => {
         )
     }
 
-    const encryptPassword: ()
-
     const urlAddPassword = import.meta.env.VITE_URL_ADDPASSWORD
 
     //Gestion des roles des differents utilisateurs
