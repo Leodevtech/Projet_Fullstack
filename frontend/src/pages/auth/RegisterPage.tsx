@@ -33,9 +33,11 @@ const Register: React.FC = () => {
     },
   ];
 
+  const urlRegister = import.meta.env.VITE_URL_REGISTER
+
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
-      await api.post("http://localhost:3000/api/auth/register", data);
+      await api.post(`${urlRegister}`, data);
       console.log(data);
       alert("Votre compte a bien été crée");
       navigate("/");

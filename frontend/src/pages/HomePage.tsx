@@ -21,6 +21,9 @@ import { Box,
 import {useAuth as auth} from '../hooks/UseAuth'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
+import type { FieldValues, SubmitHandler } from "react-hook-form"
+import api from "../api/axios";
+import axios from "axios";
 
 const Home: React.FC = () => {
 
@@ -35,19 +38,38 @@ const Home: React.FC = () => {
     //Gestion ouverture/fermeture boite de dialogue ajout de mot de passe
     const [open, setOpen] = useState<boolean>(false)
 
+    const urlAddPassword = import.meta.env.VITE_URL_ADDPASSWORD
+
     //Gestion des roles des differents utilisateurs
-    const role = (role: string | undefined) => {
+    const role = async (role: string | undefined) => {
         if (role === "USER") {
             return (<Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>)
         } else if (role === "ADMIN") {
             return (<Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>administrateur</Text>)
+        } else if (role === "MODERATOR") {
+             return (<Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>modérateur</Text>)
         } else {
             return (<Text as={"span"} color={"#fc2508"} border={"#fc2508 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur non identifié</Text>)
         }
     }
 
-    const onSubmitAddPassword = () => {
+    //Envoie du mot de passe au backend pour chiffrage 
+    const onSubmitAddPassword: SubmitHandler<FieldValues> = async (data) => {
+        try {
+            await api.post(`${urlAddPassword}`, data)
+            console.log(data);
+            alert("Votre mot de passe à bien été ajouté à votre coffre-fort")
+        } catch (error: unknown) {
+            console.error(error);
+      let errorMessage = "Une erreur est survenue lors de l'ajout de votre mot de passe'";
 
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || errorMessage;
+      } else if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      alert(errorMessage);
+        }
     }
 
     return (
@@ -97,11 +119,6 @@ const Home: React.FC = () => {
 
                                         <DialogBody>
                                             <Stack gap={8}>
-                                                <Input  type="text" name="user_id" required value={user?.id} display={"none"}
-                                                h={"80px"} w={"690px"}
-                                                color={"black"} fontSize={"32px"}
-                                                bg={"#D9D9D9"}
-                                                borderColor={"#D9D9D9"} borderRadius={"20px"}/>
 
                                                 <Input type="text" name="service" required 
                                                 h={"80px"} w={"690px"}
@@ -161,7 +178,7 @@ const Home: React.FC = () => {
                                             _hover={{
                                             shadow: "inner",
                                             }}
-                                            onClick={onSubmitAddPassword}
+                                            onClick={() => {return onSubmitAddPassword}}
                                             >
                                             Ajouter
                                         </Button>

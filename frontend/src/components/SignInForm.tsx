@@ -50,11 +50,14 @@ const SignInForm: React.FC = () => {
     },
   ];
 
+  const host = import.meta.env.VITE_HOST
+  const port = import.meta.env.VITE_SERVER_PORT
+  const urlLogin = import.meta.env.VITE_URL_LOGIN
+
   //Vérifications et connexion à travers un token
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    try {
-      const res: AxiosResponse = await api.post("http://localhost:3000/api/auth/login", data);
-      console.log(data);
+    try {      
+      const res: AxiosResponse = await api.post(`${urlLogin}`, data);
       localStorage.setItem('token', res.data.token)
       alert("Votre compte a bien été validé");
       navigate("/home");
@@ -76,10 +79,13 @@ const SignInForm: React.FC = () => {
 
   const [email, setEmail] = useState<string>("")
 
+  const urlRestPassword = import.meta.env.VITE_URL_RESETPASSWORD
+
   //Gestion de l'envoie d'un mail de reset de mot de passe
   const handleSendMail: SubmitHandler<FieldValues> = async () => {
     try {
-      await api.post("http://localhost:3000/api/auth/reset-password-request", {email})
+      console.log(`http://${host}:${port}/${urlRestPassword}`);      
+      await api.post(`http://${host}:${port}/${urlRestPassword}`, {email})
       console.log(email);
       alert('Mail de vérification envoyé ;)'); 
       setOpen(false)
