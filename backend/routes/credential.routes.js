@@ -1,10 +1,10 @@
 import express from "express";
-import { authMiddleware } from "../middleware/auth.middleware";
 import {
   addCredential,
   getMyCredentials,
-  deleteMyCredentials,
+  deleteMyCredential,
 } from "../controllers/credential.controller.js";
+import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -21,6 +21,6 @@ router.post("/home", addCredential);
 router.get("/home", getMyCredentials);
 
 //supprimer un idd par son id
-router.delete("/home/:id", deleteMyCredentials);
+router.delete("/home/:id", deleteMyCredential);
 
 export default router;
