@@ -97,11 +97,6 @@ const Home: React.FC = () => {
 
                                         <DialogBody>
                                             <Stack gap={8}>
-                                                <Input  type="text" name="user_id" required value={user?.id} display={"none"}
-                                                h={"80px"} w={"690px"}
-                                                color={"black"} fontSize={"32px"}
-                                                bg={"#D9D9D9"}
-                                                borderColor={"#D9D9D9"} borderRadius={"20px"}/>
 
                                                 <Input type="text" name="service" required 
                                                 h={"80px"} w={"690px"}
