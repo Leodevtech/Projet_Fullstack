@@ -12,10 +12,10 @@ import {
 
 export const addCredential = async (req, res) => {
   try {
-    const { service, username, password, notes } = req.body;
+    const { service, email, password, notes } = req.body;
 
     // Validation basique des champs obligatoire
-    if (!service || !username || !password) {
+    if (!service || !email || !password) {
       return res.status(400).json({
         message: "Les champs service, username et password sont obligatoire",
       });
@@ -27,7 +27,7 @@ export const addCredential = async (req, res) => {
     const id = await createCredential(
       req.user.id,
       service,
-      username,
+      email,
       encryptedPassword,
       notes,
     );
@@ -58,7 +58,7 @@ export const getMyCredentials = async (req, res) => {
     const result = credentials.map((cred) => ({
       id: cred.id,
       service: cred.service,
-      username: cred.username,
+      email: cred.email,
       password: decryptPassword(cred.encrypted_password), // Mot de passe enc lair
       notes: cred.notes || "",
       created_at: cred.created_at,
