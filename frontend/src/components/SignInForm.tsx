@@ -28,22 +28,11 @@ import Form from "./Form";
 import api from "../api/axios";
 import { useState } from "react";
 
-export interface IData {
-  nom: string;
-  email: string;
-  password_hash: string;
-  vault_salt: string;
-  role: string;
-  is_verified: boolean;
-  verify_token: string;
-  reset_token: string;
-  create_at: Date;
-  update_at: Date;
-}
-
 const SignInForm: React.FC = () => {
+  //Variable de navigation à travers les pages
   const navigate = useNavigate();
 
+  //Les inputs à soummettre à Form
   const fields: IInputs[] = [
     {
       name: "email",
@@ -61,20 +50,17 @@ const SignInForm: React.FC = () => {
     },
   ];
 
-  const [open, setOpen] = useState<boolean>(false)
-  const [email, setEmail] = useState<string>("")
-
-
+  //Vérifications et connexion à travers un token
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     try {
       const res: AxiosResponse = await api.post("http://localhost:3000/api/auth/login", data);
       console.log(data);
       localStorage.setItem('token', res.data.token)
-      alert("Votre compte a bien été crée");
+      alert("Votre compte a bien été validé");
       navigate("/home");
     } catch (error: unknown) {
       console.error(error);
-      let errorMessage = "Une erreur est survenue lors de l'inscription";
+      let errorMessage = "Une erreur est survenue lors de la connexion";
 
       if (axios.isAxiosError(error)) {
         errorMessage = error.response?.data?.message || errorMessage;
@@ -85,6 +71,12 @@ const SignInForm: React.FC = () => {
     }
   };
 
+  //Gestion de l'ouverture/fermeture de la boite de dialogue d'envoie de mail de reset
+  const [open, setOpen] = useState<boolean>(false)
+
+  const [email, setEmail] = useState<string>("")
+
+  //Gestion de l'envoie d'un mail de reset de mot de passe
   const handleSendMail: SubmitHandler<FieldValues> = async () => {
     try {
       await api.post("http://localhost:3000/api/auth/reset-password-request", {email})

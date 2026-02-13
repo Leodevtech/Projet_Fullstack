@@ -20,6 +20,7 @@ interface AuthProviderProps {
   children: ReactNode
 }
 
+//Provider pour la gestion de token
 const AuthProvider = ({ children } : AuthProviderProps) => {
   const [user, setUser] = useState<DecodedUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -27,6 +28,7 @@ const AuthProvider = ({ children } : AuthProviderProps) => {
   useEffect(() => {
     const token = localStorage.getItem(`token`);
 
+    //récupération des infos de l'utilisateur à partir de son token
     const userAuth = () => {
       if (token) {
         try {
@@ -44,6 +46,7 @@ const AuthProvider = ({ children } : AuthProviderProps) => {
     userAuth()
   }, [])
   
+  //déconnection de l'utilisateur
   const logout = useCallback(() => {
     localStorage.removeItem(`token`);
     setUser(null);

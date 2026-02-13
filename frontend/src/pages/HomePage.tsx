@@ -24,6 +24,7 @@ import { useState } from "react"
 
 const Home: React.FC = () => {
 
+    //Gestion de l'utilisateur grace a son token
     const { user, logout} = auth()
     const navigate = useNavigate()
     const LogoutAndRedirect = () => {
@@ -31,8 +32,10 @@ const Home: React.FC = () => {
         navigate('/')
     }
 
+    //Gestion ouverture/fermeture boite de dialogue ajout de mot de passe
     const [open, setOpen] = useState<boolean>(false)
 
+    //Gestion des roles des differents utilisateurs
     const role = (role: string | undefined) => {
         if (role === "USER") {
             return (<Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>)
