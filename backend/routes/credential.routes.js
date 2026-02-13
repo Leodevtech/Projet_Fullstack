@@ -15,12 +15,12 @@ router.use(authMiddleware);
 // Routes pour la gestion des iddentifiants
 
 // Ajout un nouvel idd
-router.post("/", addCredential);
+router.post("/home", addCredential);
 
 // récuperer tous les idd
-router.get("/", getMyCredentials);
+router.get("/home", getMyCredentials);
 
 //supprimer un idd par son id
-router.delete("/:id", deleteMyCredentials);
+router.delete("/home/:id", deleteMyCredentials);
 
 export default router;
