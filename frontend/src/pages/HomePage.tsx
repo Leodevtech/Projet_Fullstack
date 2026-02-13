@@ -84,6 +84,7 @@ const Home: React.FC = () => {
             await api.post(`${urlAddPassword}`, data)
             console.log(data);
             alert("Votre mot de passe à bien été ajouté à votre coffre-fort")
+            setOpen(false)
         } catch (error: unknown) {
             console.error(error);
       let errorMessage = "Une erreur est survenue lors de l'ajout de votre mot de passe'";
@@ -203,7 +204,7 @@ const Home: React.FC = () => {
                                             _hover={{
                                             shadow: "inner",
                                             }}
-                                            onClick={onSubmitAddPassword}
+                                            onSubmit={onSubmitAddPassword}
                                             >
                                             Ajouter
                                         </Button>
