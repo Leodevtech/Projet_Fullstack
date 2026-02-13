@@ -2,7 +2,7 @@ import { db } from "../config/db.js";
 
 // model pour la création d'idd
 
-export const createCedential = async (
+export const createCredential = async (
   userId,
   service,
   email,
