@@ -1,14 +1,50 @@
-import { Box, Button, Flex, Heading, HStack, Text } from "@chakra-ui/react"
+import { Box, 
+    Button, 
+    Input, 
+    DialogBackdrop, 
+    DialogBody, 
+    DialogContent, 
+    DialogHeader, 
+    DialogPositioner, 
+    DialogRoot, 
+    DialogTitle, 
+    DialogTrigger, 
+    Flex, 
+    Heading, 
+    HStack, 
+    Portal, 
+    Stack, 
+    Text, 
+    DialogFooter,
+    DialogActionTrigger,
+    DialogCloseTrigger} from "@chakra-ui/react"
 import {useAuth as auth} from '../hooks/UseAuth'
 import { useNavigate } from "react-router-dom"
+import { useState } from "react"
 
 const Home: React.FC = () => {
 
-    const {logout} = auth()
+    const { user, logout} = auth()
     const navigate = useNavigate()
     const LogoutAndRedirect = () => {
         logout()
         navigate('/')
+    }
+
+    const [open, setOpen] = useState<boolean>(false)
+
+    const role = (role: string | undefined) => {
+        if (role === "USER") {
+            return (<Text as={"span"} color={"#fccf08"} border={"#fccf08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur</Text>)
+        } else if (role === "ADMIN") {
+            return (<Text as={"span"} color={"#31fc08"} border={"#31fc08 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>administrateur</Text>)
+        } else {
+            return (<Text as={"span"} color={"#fc2508"} border={"#fc2508 solid 1px"} borderRadius={"full"} px={"5px"} py={"3px"}>utilisateur non identifié</Text>)
+        }
+    }
+
+    const onSubmitAddPassword = () => {
+
     }
 
     return (
@@ -34,21 +70,111 @@ const Home: React.FC = () => {
                 w={"100%"}
                 py={3} px={5}
                 borderBottom={"#020061 2px solid"}>
-                    <Heading>My Vault</Heading>
-                    <Button bg={"#ffffff1c"} 
-                    borderRadius={"10px"}
-                    shadow={"lg"}
-                    _hover={{
-                        shadow: "inner"
-                    }}>
-                        + Add password
-                    </Button>
+                    <Heading>Votre coffre-fort</Heading>
+                    <DialogRoot placement={"center"} size={"xl"} open={open} onOpenChange={(e) => setOpen(e.open)}>
+                        <DialogTrigger asChild>
+                            <Button bg={"#ffffff1c"} 
+                            borderRadius={"10px"}
+                            shadow={"lg"}
+                            _hover={{
+                                shadow: "inner"
+                            }}>
+                                + Ajouter
+                            </Button>
+                        </DialogTrigger>
+
+                        <Portal>
+                            <DialogBackdrop/>
+                            <DialogPositioner>
+                                <DialogContent>
+                                    <form>
+                                        <DialogHeader>
+                                            <DialogTitle>Ajouter un mot de passe</DialogTitle>
+                                        </DialogHeader>
+
+                                        <DialogBody>
+                                            <Stack gap={8}>
+                                                <Input  type="text" name="user_id" required value={user?.id} display={"none"}
+                                                h={"80px"} w={"690px"}
+                                                color={"black"} fontSize={"32px"}
+                                                bg={"#D9D9D9"}
+                                                borderColor={"#D9D9D9"} borderRadius={"20px"}/>
+
+                                                <Input type="text" name="service" required 
+                                                h={"80px"} w={"690px"}
+                                                color={"black"} fontSize={"32px"}
+                                                bg={"#D9D9D9"}
+                                                borderColor={"#D9D9D9"} borderRadius={"20px"}
+                                                placeholder={"site"}
+                                                _placeholder={{
+                                                    textAlign: "center",
+                                                    color: "black"
+                                                }}/>
+
+                                                <Input type="text" name="username" required 
+                                                h={"80px"} w={"690px"}
+                                                color={"black"} fontSize={"32px"}
+                                                bg={"#D9D9D9"}
+                                                borderColor={"#D9D9D9"} borderRadius={"20px"}
+                                                placeholder={"identifiant"}
+                                                _placeholder={{
+                                                    textAlign: "center",
+                                                    color: "black"
+                                                }}/>
+
+                                                <Input type="password" name="password" required 
+                                                h={"80px"} w={"690px"}
+                                                color={"black"} fontSize={"32px"}
+                                                bg={"#D9D9D9"}
+                                                borderColor={"#D9D9D9"} borderRadius={"20px"}
+                                                placeholder={"mot de passe"}
+                                                _placeholder={{
+                                                    textAlign: "center",
+                                                    color: "black"
+                                                }}/>
+
+                                            </Stack>
+                                        </DialogBody>
+
+                                        <DialogFooter>
+                                            <DialogActionTrigger asChild>
+                                                <Button
+                                                color={"black"}
+                                                bg={"transparent"}
+                                                shadow={"lg"}
+                                                borderRadius={"full"}
+                                                _hover={{
+                                                    shadow: "inner",
+                                                }}
+                                                >
+                                                Annuler
+                                                </Button>
+                                            </DialogActionTrigger>
+                                            <Button
+                                            color={"black"}
+                                            bg={"transparent"}
+                                            shadow={"lg"}
+                                            borderRadius={"full"}
+                                            _hover={{
+                                            shadow: "inner",
+                                            }}
+                                            onClick={onSubmitAddPassword}
+                                            >
+                                            Ajouter
+                                        </Button>
+                                        </DialogFooter>
+                                    </form>
+                                    <DialogCloseTrigger />
+                                </DialogContent>
+                            </DialogPositioner>
+                        </Portal>
+                    </DialogRoot>
                 </Flex>
                 <Flex direction={"column"} gap={2}
                 w={"100%"} p={3}>
                     <Box>
-                        <Heading>Welcome <span>Nom utilisateur</span></Heading>
-                        <Text>You have <span>Nombre de mdp</span> passwords saved</Text>
+                        <Heading>Bienvenu {role(user?.role)}</Heading>
+                        <Text>Voici le contenu de votre coffre</Text>
                     </Box>
 
                     <Flex direction={"column"}>

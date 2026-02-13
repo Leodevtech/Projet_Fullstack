@@ -1,5 +1,6 @@
 import { createContext, useState, useEffect, type ReactNode, useMemo, useCallback } from "react";
 import { jwtDecode, type JwtPayload } from "jwt-decode";
+
 interface DecodedUser extends JwtPayload {
   id: number,
   email: string,
@@ -26,10 +27,11 @@ const AuthProvider = ({ children } : AuthProviderProps) => {
   useEffect(() => {
     const token = localStorage.getItem(`token`);
 
-    const auth = () => {
+    const userAuth = () => {
       if (token) {
         try {
           const decoded = jwtDecode<DecodedUser>(token);
+          console.log(decoded);
           setUser(decoded);
       } catch (error) {
         localStorage.removeItem(`token`);
@@ -39,7 +41,7 @@ const AuthProvider = ({ children } : AuthProviderProps) => {
     
       setLoading(false);
     }
-    auth()
+    userAuth()
   }, [])
   
   const logout = useCallback(() => {
