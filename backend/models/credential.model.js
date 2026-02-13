@@ -5,13 +5,13 @@ import { db } from "../config/db.js";
 export const createCedential = async (
   userId,
   service,
-  username,
+  email,
   encryptedPassword,
   notes = null,
 ) => {
   const [result] = await db.query(
-    "INSERT INTO credentials (user_id, service, username, encryptedPassword, notes) VALUES (?, ?, ?, ?, ?)",
-    [userId, service, username, encryptedPassword, notes],
+    "INSERT INTO credentials (user_id, service, email, encryptedPassword, notes) VALUES (?, ?, ?, ?, ?)",
+    [userId, service, email, encryptedPassword, notes],
   );
   return result.insertId;
 };
@@ -23,7 +23,7 @@ export const createCedential = async (
 
 export const getCredentialsByUserId = async (userId) => {
   const [rows] = await db.query(
-    `SELECT id, service, username, encrypted_password, notes, created_at
+    `SELECT id, service, email, encrypted_password, notes, created_at
     FROM credentials
     WHERE user_id = ?
     ORDER BY created_at DESC`,
