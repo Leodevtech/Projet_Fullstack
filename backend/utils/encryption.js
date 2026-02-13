@@ -16,11 +16,11 @@ if (KEY.length !== 32) {
  * @returns {string} - Chaine chiffré à stocker
  */
 
-export const encryptPassword = (password) => {
+export const encryptPassword = (password, key) => {
   // Génère un iv (vecteur d'init) aléatoire pour plus de sécurité
   const iv = crypto.randomBytes(12);
 
-  const cipher = crypto.createCipheriv(ALGORITHM, KEY, id);
+  const cipher = crypto.createCipheriv(ALGORITHM, key, id);
 
   // Chiffrement du mot de passe
   let encrypted = cipher.update(password, "utf8", "hex");
@@ -39,7 +39,7 @@ export const encryptPassword = (password) => {
  * @returns {string} - Le mot de passe en clair
  */
 
-export const decryptPassword = (encryptedString) => {
+export const decryptPassword = (encryptedString, key) => {
   // on sépare les 3 parties : IV + authTage + Données chiffrées
   const [ivHex, authTagHex, encryptedHex] = encryptedString.split(":");
 
@@ -47,7 +47,7 @@ export const decryptPassword = (encryptedString) => {
   const authTag = Buffer.from(authTagHex, "hex");
   const encrypted = Buffer.from(encryptedHex, "hex");
 
-  const decipher = crypto.createDecipheriv(ALGORITHM, KEY, iv);
+  const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
   decipher.setAuthTag(authTag);
 
   let decrypted = decipher.update(encrypted, "hex", "utf8");
