@@ -1,34 +1,64 @@
-import { createContext, useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
+import { createContext, useState, useEffect, type ReactNode, useMemo, useCallback } from "react";
+import { jwtDecode, type JwtPayload } from "jwt-decode";
+interface DecodedUser extends JwtPayload {
+  id: number,
+  email: string,
+  role: string,
+}
 
-export const AuthContext = createContext();
+interface AuthContextType {
+  user: DecodedUser | null;
+  setUser: React.Dispatch<React.SetStateAction<DecodedUser | null>>
+  logout: () => void,
+  loading: boolean
+}
 
-export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+const AuthContext: React.Context<AuthContextType | undefined> = createContext<AuthContextType | undefined>(undefined);
 
+interface AuthProviderProps {
+  children: ReactNode
+}
+
+const AuthProvider = ({ children } : AuthProviderProps) => {
+  const [user, setUser] = useState<DecodedUser | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  
   useEffect(() => {
     const token = localStorage.getItem(`token`);
 
-    if (token) {
-      try {
-        setUser(jwtDecode(token));
+    const auth = () => {
+      if (token) {
+        try {
+          const decoded = jwtDecode<DecodedUser>(token);
+          setUser(decoded);
       } catch (error) {
         localStorage.removeItem(`token`);
-        console.error(error);
+        console.error(error);  
       }
     }
-    setLoading(false);
-  }, []);
-
-  const logout = () => {
+    
+      setLoading(false);
+    }
+    auth()
+  }, [])
+  
+  const logout = useCallback(() => {
     localStorage.removeItem(`token`);
     setUser(null);
-  };
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    user,
+    setUser,
+    logout,
+    loading
+  }), [user, logout, loading]);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider value={contextValue}>
       {children}
     </AuthContext.Provider>
   );
 };
+
+export {AuthContext, AuthProvider}

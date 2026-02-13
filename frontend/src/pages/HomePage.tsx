@@ -1,34 +1,14 @@
 import { Box, Button, Flex, Heading, HStack, Text } from "@chakra-ui/react"
+import {useAuth as auth} from '../hooks/UseAuth'
 import { useNavigate } from "react-router-dom"
-import type { FieldValues, SubmitHandler } from "react-hook-form";
-import api from "../api/axios";
-import axios from "axios";
 
 const Home: React.FC = () => {
-    
+
+    const {logout} = auth()
     const navigate = useNavigate()
-
-    //function for disconnect
-    const handleClickDeco: SubmitHandler<FieldValues> = async () => {
-        const token = localStorage.getItem("token")
-        if (token) {
-            try {
-                await api.post("http://localhost:3000/api/auth/logout", {token})
-                console.log(token);
-                alert("Deconnexion en cours")               
-                navigate("/")
-            } catch (error: unknown) {
-                console.error(error);
-                let errorMessage = "Une erreur est survenue lors de la déconnexion";
-
-                if (axios.isAxiosError(error)) {
-                    errorMessage = error.response?.data?.message || errorMessage;
-                } else if (error instanceof Error) {
-                    errorMessage = error.message;
-                }
-                alert(errorMessage);
-            }
-        } else alert('Pas de compte connecté :/')
+    const LogoutAndRedirect = () => {
+        logout()
+        navigate('/')
     }
 
     return (
@@ -43,7 +23,7 @@ const Home: React.FC = () => {
             _hover={{
                 shadow: "inner"
             }}
-            onClick={handleClickDeco}>
+            onClick={LogoutAndRedirect}>
                 Déconnexion
             </Button>
             <Flex direction={"column"} alignItems={"center"}
