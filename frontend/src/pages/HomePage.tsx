@@ -66,7 +66,7 @@ const Home: React.FC = () => {
     const saltLegth = 16
     const encoder = new TextEncoder()
 
-    const encriptionKey: (password: string, salt) => Promise<CryptoKey> = (password: string, salt: Uint8Array) => {
+    const encriptionKey: (password: string, salt) => Promise<CryptoKey> = async (password: string, salt: Uint8Array) => {
         const keyConstructor = await window.crypto.subtle.importKey(
             "raw",
             encoder.encode(password),
