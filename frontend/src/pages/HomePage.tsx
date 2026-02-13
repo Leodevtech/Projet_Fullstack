@@ -23,7 +23,7 @@ import { Box,
 import {useAuth} from '../hooks/UseAuth'
 import { useNavigate } from "react-router-dom"
 import { useState } from "react"
-import type { FieldValues, SubmitHandler } from "react-hook-form"
+import   { type FieldValues, type SubmitHandler, useForm} from "react-hook-form"
 import api from "../api/axios";
 import axios from "axios";
 
@@ -31,6 +31,8 @@ const Home: React.FC = () => {
 
     const auth = useAuth()
     const navigate = useNavigate()
+
+    const { register, handleSubmit, reset } = useForm();
 
     //Gestion ouverture/fermeture boite de dialogue ajout de mot de passe
     const [open, setOpen] = useState<boolean>(false)
@@ -85,6 +87,7 @@ const Home: React.FC = () => {
             console.log(data);
             alert("Votre mot de passe à bien été ajouté à votre coffre-fort")
             setOpen(false)
+            reset()
         } catch (error: unknown) {
             console.error(error);
       let errorMessage = "Une erreur est survenue lors de l'ajout de votre mot de passe'";
@@ -138,7 +141,7 @@ const Home: React.FC = () => {
                             <DialogBackdrop/>
                             <DialogPositioner>
                                 <DialogContent>
-                                    <form>
+                                    <form onSubmit={handleSubmit(onSubmitAddPassword)}>
                                         <DialogHeader>
                                             <DialogTitle>Ajouter un mot de passe</DialogTitle>
                                         </DialogHeader>
@@ -146,7 +149,9 @@ const Home: React.FC = () => {
                                         <DialogBody>
                                             <Stack gap={8}>
 
-                                                <Input type="text" name="service" required 
+                                                <Input 
+                                                {...register("service", {required: true})}
+                                                type="text"
                                                 h={"80px"} w={"690px"}
                                                 color={"black"} fontSize={"32px"}
                                                 bg={"#D9D9D9"}
@@ -157,7 +162,9 @@ const Home: React.FC = () => {
                                                     color: "black"
                                                 }}/>
 
-                                                <Input type="text" name="username" required 
+                                                <Input 
+                                                {...register("username", {required: true})}
+                                                type="text"
                                                 h={"80px"} w={"690px"}
                                                 color={"black"} fontSize={"32px"}
                                                 bg={"#D9D9D9"}
@@ -168,7 +175,9 @@ const Home: React.FC = () => {
                                                     color: "black"
                                                 }}/>
 
-                                                <Input type="password" name="password" required 
+                                                <Input 
+                                                {...register("password", {required: true})}
+                                                type="password"
                                                 h={"80px"} w={"690px"}
                                                 color={"black"} fontSize={"32px"}
                                                 bg={"#D9D9D9"}
@@ -196,7 +205,8 @@ const Home: React.FC = () => {
                                                 Annuler
                                                 </Button>
                                             </DialogActionTrigger>
-                                            <Button
+                                            <Button 
+                                            type="submit"
                                             color={"black"}
                                             bg={"transparent"}
                                             shadow={"lg"}
@@ -204,7 +214,6 @@ const Home: React.FC = () => {
                                             _hover={{
                                             shadow: "inner",
                                             }}
-                                            onSubmit={onSubmitAddPassword}
                                             >
                                             Ajouter
                                         </Button>
