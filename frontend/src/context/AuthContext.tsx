@@ -33,7 +33,6 @@ const AuthProvider = ({ children } : AuthProviderProps) => {
       if (token) {
         try {
           const decoded = jwtDecode<DecodedUser>(token);
-          console.log(decoded);
           setUser(decoded);
       } catch (error) {
         localStorage.removeItem(`token`);
